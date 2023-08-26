@@ -1,5 +1,6 @@
 // Array to store all book objects
 const myLibrary = [];
+const headerRowFields = ["S. No.", "Title", "Author", "Pages", "Read", "Remove"];
 const bookListContainer = document.getElementById('book-list');
 const addBookForm = document.getElementById('add-new-book');
 const buttonShowBookForm = document.getElementById('show-add-book-form');
@@ -39,6 +40,18 @@ function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
+function createHeaderRow () {
+    
+    let headerRow = document.createElement('div');
+    headerRow.classList.add("book-row",  "heading-row");
+    headerRowFields.forEach((field) => {
+        let headerRowField = document.createElement('div');
+        headerRowField.textContent = field;
+        headerRow.appendChild(headerRowField);
+    });
+    return headerRow;
+}
+
 function createBookRow(book, bookIndex) {
 
     let bookRow = document.createElement('div');
@@ -53,7 +66,7 @@ function createBookRow(book, bookIndex) {
 }
 
 function removeAllChildNodes(parent) {
-    while (parent.firstChild) {
+    while (parent.firstChild) {        
         parent.removeChild(parent.firstChild);
     }
 }
@@ -61,7 +74,9 @@ function removeAllChildNodes(parent) {
 function displayAllBooksInLibrary() {
     
     removeAllChildNodes(bookListContainer);
-
+    
+    bookListContainer.appendChild(createHeaderRow());
+    
     myLibrary.forEach((book) => {
         let bookIndex = (myLibrary.indexOf(book));
         bookListContainer.appendChild(createBookRow(book, bookIndex));
