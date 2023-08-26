@@ -13,8 +13,8 @@
     </header>
     <main>
         <article>
-            <h2>Book Glossary</h2>
             <section>
+                <h2>Book Glossary</h2>
                 <div id="book-list">
                     <div class="book-row heading-row">
                         <div >S. No.</div>
@@ -25,9 +25,13 @@
                     </div>
                 </div>
             </section>
+            <section>
+                <h2>Add a New Book</h2>
+                <button type="button" id="show-add-book-form">Add New Book</button>
+            </section>
         </article>
         <aside>
-            <form action="">
+            <form id="add-new-book" class="hide" action="">
                 <h2>Add a new Book!</h2>
                 <fieldset>
                     <legend>Book Details</legend>
@@ -48,11 +52,11 @@
                             <input type="radio" id="read" name="read" value="true">
                             <label for="read">Read</label>
                             
-                            <input type="radio" id="not_read" name="read" value="false">
+                            <input type="radio" id="not_read" name="read" value="false" checked>
                             <label for="not_read">Not Read</label>
                         </li>
                     </ul>
-                    <button type="submit">Add Book</button>
+                    <button id="submit-new-book" type="submit">Add Book</button>
                 </fieldset>
             </form>
         </aside>

@@ -1,8 +1,27 @@
 // Array to store all book objects
 const myLibrary = [];
-const bookListContainer = document.getElementById("book-list");
+const bookListContainer = document.getElementById('book-list');
+const addBookForm = document.getElementById('add-new-book');
+const buttonShowBookForm = document.getElementById('show-add-book-form');
+const buttonSubmitBookDetails = document.getElementById('submit-new-book');
 
 let nextBookSerialNo;
+
+buttonShowBookForm.addEventListener('click', () => addBookForm.classList.toggle('hide'));
+
+buttonSubmitBookDetails.addEventListener("click", submitButtonBehavior);
+
+function submitButtonBehavior(event) {
+    event.preventDefault();
+    const newBook = new Book (
+                                document.getElementById('title').value,
+                                document.getElementById('author').value,
+                                document.getElementById('pages').value,
+                                document.querySelector('input[name="read"]:checked').value
+                            );    
+    addBookToLibrary(newBook);
+    displayAllBooksInLibrary();
+};
 
 function generateBookSerialNo() {
     return (myLibrary.length == 0) ? 1: (myLibrary[myLibrary.length-1].serialNo + 1);
@@ -14,10 +33,6 @@ function Book(title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
-
-    // this.bookInfo = function() {
-    //     return `${this.title} by ${this.author}, ${this.pages}, ${this.read ? 'has been read' : 'not read yet'}.`;
-    // }
 }
 
 function addBookToLibrary(book) {    
@@ -37,12 +52,22 @@ function createBookRow(book, bookIndex) {
     return bookRow;
 }
 
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
 function displayAllBooksInLibrary() {
+    
+    removeAllChildNodes(bookListContainer);
+
     myLibrary.forEach((book) => {
         let bookIndex = (myLibrary.indexOf(book));
         bookListContainer.appendChild(createBookRow(book, bookIndex));
     });
 }
+
 
 const hobbitBook = new Book ('The Hobbit', 'J.R.R. Tolkein', 295, false);
 addBookToLibrary(hobbitBook);
@@ -50,5 +75,3 @@ const hpBook = new Book ('Harry Potter', 'J.K. Rowling', 500, false);
 addBookToLibrary(hpBook);
 
 displayAllBooksInLibrary();
-
-console.log(myLibrary);
