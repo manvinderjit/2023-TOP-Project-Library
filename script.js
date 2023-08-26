@@ -3,6 +3,7 @@ const myLibrary = [];
 const headerRowFields = ["S. No.", "Title", "Author", "Pages", "Read", "Remove"];
 const bookListContainer = document.getElementById('book-list');
 const addBookForm = document.getElementById('add-new-book');
+
 const buttonShowBookForm = document.getElementById('show-add-book-form');
 const buttonSubmitBookDetails = document.getElementById('submit-new-book');
 
@@ -24,6 +25,15 @@ function submitButtonBehavior(event) {
     displayAllBooksInLibrary();
 };
 
+function removeBookButtonBehavior() {
+    const buttonsRemoveBook = document.querySelectorAll('button[name="button-remove-book"]');
+    buttonsRemoveBook.forEach((button) => {
+        button.addEventListener('click', () => {
+            removeBook(button.getAttribute('id'));            
+        })
+    })
+}
+
 function generateBookSerialNo() {
     return (myLibrary.length == 0) ? 1: (myLibrary[myLibrary.length-1].serialNo + 1);
 }
@@ -40,6 +50,18 @@ function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
+function findBookIndexInMyLibrary(bookSerialNo) {
+    return myLibrary.findIndex((bookObject) => {
+        return bookObject['serialNo'] == bookSerialNo;
+    });
+}
+
+function removeBook(bookSerialNo) {
+    const bookIndex = findBookIndexInMyLibrary(bookSerialNo);
+    myLibrary.splice(bookIndex, 1);
+    displayAllBooksInLibrary();
+}
+
 function createHeaderRow () {
     
     let headerRow = document.createElement('div');
@@ -52,6 +74,17 @@ function createHeaderRow () {
     return headerRow;
 }
 
+function createDivWithBookRemoveButton(bookSerialNo) {
+    let fieldDiv = document.createElement('div');
+    let removeBookButton = document.createElement('button'); 
+    removeBookButton.textContent = "Remove";
+    removeBookButton.type = "button";
+    removeBookButton.id = bookSerialNo;
+    removeBookButton.name = "button-remove-book";
+    fieldDiv.appendChild(removeBookButton);
+    return(fieldDiv);
+}
+
 function createBookRow(book, bookIndex) {
 
     let bookRow = document.createElement('div');
@@ -62,6 +95,9 @@ function createBookRow(book, bookIndex) {
         fieldDiv.textContent = book[property];        
         bookRow.appendChild(fieldDiv);
     }
+
+    bookRow.appendChild(createDivWithBookRemoveButton(book['serialNo']));
+
     return bookRow;
 }
 
@@ -76,13 +112,14 @@ function displayAllBooksInLibrary() {
     removeAllChildNodes(bookListContainer);
     
     bookListContainer.appendChild(createHeaderRow());
-    
+
     myLibrary.forEach((book) => {
         let bookIndex = (myLibrary.indexOf(book));
         bookListContainer.appendChild(createBookRow(book, bookIndex));
     });
-}
 
+    removeBookButtonBehavior();
+}
 
 const hobbitBook = new Book ('The Hobbit', 'J.R.R. Tolkein', 295, false);
 addBookToLibrary(hobbitBook);
