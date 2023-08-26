@@ -72,5 +72,16 @@ li {
     list-style: none;
     display: flex;  
     justify-content: space-between;
+    align-items: center;
     gap: 1rem;
+}
+
+input {
+    height: 1.5rem;
+}
+
+button {
+    width: 10rem;
+    height: 2rem;
+    font-size: 1rem;
 }
