@@ -3,13 +3,6 @@ const myLibrary = [];
 
 const bookListContainer = document.getElementById("book-list");
 
-function generateBookSerialNo() {
-    if(myLibrary.length == 0) {
-        return 1;
-    }
-    return myLibrary.length + 1;
-}
-
 function Book(title, author, pages, read) {    
     this.title = title;
     this.author = author;
@@ -20,6 +13,8 @@ function Book(title, author, pages, read) {
     //     return `${this.title} by ${this.author}, ${this.pages}, ${this.read ? 'has been read' : 'not read yet'}.`;
     // }
 }
+
+
 
 const hobbitBook = new Book ('The Hobbit', 'J.R.R. Tolkein', 295, false);
 addBookToLibrary(hobbitBook);
@@ -33,12 +28,14 @@ function addBookToLibrary(book) {
     myLibrary.push(book);
 }
 
-function createBookRow(book) {
+function createBookRow(book, bookIndex) {
+
     let bookRow = document.createElement('div');
     bookRow.classList.add("book-row");    
-    // let fieldSerialNo = document.createElement('div');
-    // fieldSerialNo.textContent = generateBookSerialNo();
-    // bookRow.appendChild(fieldSerialNo);
+
+    let fieldSerialNo = document.createElement('div');
+    fieldSerialNo.textContent = bookIndex + 1;
+    bookRow.appendChild(fieldSerialNo);
 
     for(const property in book) {        
         let fieldDiv = document.createElement('div');
@@ -50,10 +47,9 @@ function createBookRow(book) {
 
 function displayAllBooksInLibrary() {
     myLibrary.forEach((book) => {
-        bookListContainer.appendChild(createBookRow(book));
+        let bookIndex = (myLibrary.indexOf(book));
+        bookListContainer.appendChild(createBookRow(book, bookIndex));
     });
 }
 
-
 displayAllBooksInLibrary();
-// console.log(myLibrary);
