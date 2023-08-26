@@ -22,11 +22,27 @@ main {
 }
 
 article, aside {
-    display: flex;
-    justify-content: center;
+    display: flex;    
+    flex-direction: column;
 }
 
 article {
+
+}
+
+.book-list {
+
+}
+
+.book-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.book-row > div {
+    border: 1px solid gray;
+    padding: 0.5rem;    
 
 }
 
@@ -48,5 +64,7 @@ ul {
 
 li {
     list-style: none;
-    text-align: center;    
+    display: flex;  
+    justify-content: space-between;
+    gap: 1rem;
 }
