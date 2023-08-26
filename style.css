@@ -49,7 +49,11 @@ article {
 .book-row > div {
     border: 1px solid gray;
     padding: 0.5rem;    
-    min-width: 10rem;
+    width: 8rem;
+}
+
+.book-row > div > button {
+    width: fit-content;
 }
 
 aside {

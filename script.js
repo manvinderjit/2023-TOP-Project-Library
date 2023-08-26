@@ -1,6 +1,6 @@
 // Array to store all book objects
 const myLibrary = [];
-const headerRowFields = ["S. No.", "Title", "Author", "Pages", "Read", "Remove"];
+const headerRowFields = ["S. No.", "Title", "Author", "Pages", "Read", "Remove", "Toggle"];
 const bookListContainer = document.getElementById('book-list');
 const addBookForm = document.getElementById('add-new-book');
 
@@ -34,6 +34,15 @@ function removeBookButtonBehavior() {
     })
 }
 
+function toggleBookReadButtonBehavior() {
+    const buttonsToggleBookStatus = document.querySelectorAll('button[name="button-toggle-book-status"]');
+    buttonsToggleBookStatus.forEach((button) => {
+        button.addEventListener('click', () => {            
+            toggleBookReadStatus(button.getAttribute('id'));
+        })
+    })
+}
+
 function generateBookSerialNo() {
     return (myLibrary.length == 0) ? 1: (myLibrary[myLibrary.length-1].serialNo + 1);
 }
@@ -43,7 +52,11 @@ function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = read;
+    this.read = Boolean(parseInt(read));
+}
+
+Book.prototype.toggleRead = function() {
+    this.read = (this.read) ? false : true;
 }
 
 function addBookToLibrary(book) {    
@@ -59,6 +72,12 @@ function findBookIndexInMyLibrary(bookSerialNo) {
 function removeBook(bookSerialNo) {
     const bookIndex = findBookIndexInMyLibrary(bookSerialNo);
     myLibrary.splice(bookIndex, 1);
+    displayAllBooksInLibrary();
+}
+
+function toggleBookReadStatus(bookSerialNo) {
+    const bookIndex = findBookIndexInMyLibrary(bookSerialNo);    
+    (myLibrary[bookIndex].toggleRead());
     displayAllBooksInLibrary();
 }
 
@@ -85,18 +104,32 @@ function createDivWithBookRemoveButton(bookSerialNo) {
     return(fieldDiv);
 }
 
+function createDivWithToggleBookReadButton(bookSerialNo) {
+    let fieldDiv = document.createElement('div');
+    let removeBookButton = document.createElement('button'); 
+    removeBookButton.textContent = "Toggle Read";
+    removeBookButton.type = "button";
+    removeBookButton.id = bookSerialNo;
+    removeBookButton.name = "button-toggle-book-status";
+    fieldDiv.appendChild(removeBookButton);
+    return(fieldDiv);
+}
+
 function createBookRow(book, bookIndex) {
 
     let bookRow = document.createElement('div');
     bookRow.classList.add("book-row");    
 
-    for(const property in book) {        
-        let fieldDiv = document.createElement('div');
-        fieldDiv.textContent = book[property];        
-        bookRow.appendChild(fieldDiv);
+    for(const property in book) {  
+        if(property !== 'toggleRead') {
+            let fieldDiv = document.createElement('div');
+            fieldDiv.textContent = book[property];        
+            bookRow.appendChild(fieldDiv);    
+        }
     }
 
     bookRow.appendChild(createDivWithBookRemoveButton(book['serialNo']));
+    bookRow.appendChild(createDivWithToggleBookReadButton(book['serialNo']));    
 
     return bookRow;
 }
@@ -119,6 +152,7 @@ function displayAllBooksInLibrary() {
     });
 
     removeBookButtonBehavior();
+    toggleBookReadButtonBehavior();
 }
 
 const hobbitBook = new Book ('The Hobbit', 'J.R.R. Tolkein', 295, false);
