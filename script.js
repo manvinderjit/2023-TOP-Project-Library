@@ -20,15 +20,6 @@ function Book(title, author, pages, read) {
     // }
 }
 
-// console.log(hobbitBook.bookInfo());
-
-// function generateBookSerialNo() {
-//     if(myLibrary.length == 0 ) {
-//         return 1;
-//     }    
-//     return (myLibrary[myLibrary.length-1].serialNo + 1);
-// }
-
 function addBookToLibrary(book) {    
     myLibrary.push(book);
 }

@@ -19,6 +19,7 @@ header, footer {
 main {
     display: grid;
     grid-template-columns: 2.5fr 1fr;        
+    gap: 1rem;
 }
 
 article, aside {
@@ -37,13 +38,18 @@ article {
 .book-row {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
+    text-align: center;
+}
+
+.heading-row {
+    font-weight: bold;
 }
 
 .book-row > div {
     border: 1px solid gray;
     padding: 0.5rem;    
-
+    min-width: 10rem;
 }
 
 aside {
@@ -66,5 +72,16 @@ li {
     list-style: none;
     display: flex;  
     justify-content: space-between;
+    align-items: center;
     gap: 1rem;
+}
+
+input {
+    height: 1.5rem;
+}
+
+button {
+    width: 10rem;
+    height: 2rem;
+    font-size: 1rem;
 }
