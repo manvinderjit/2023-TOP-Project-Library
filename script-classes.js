@@ -31,6 +31,27 @@ class MyLibrary {
     addBookToLibrary(book) {    
         this.myLibrary.push(book);
     }
+
+    findBookIndexInMyLibrary(bookSerialNo) {
+        return this.myLibrary.findIndex((bookObject) => {
+            return bookObject['serialNo'] == bookSerialNo;
+        });
+    }
+
+    removeBook(bookSerialNo) {
+        const bookIndex = this.findBookIndexInMyLibrary(bookSerialNo);
+        this.myLibrary.splice(bookIndex, 1);
+        this.displayAllBooksInLibrary();
+    }
+
+    toggleBookReadStatus(bookSerialNo) {
+        const bookIndex = this.findBookIndexInMyLibrary(bookSerialNo);    
+        (this.myLibrary[bookIndex].toggleRead());
+        this.displayAllBooksInLibrary();
+    }
+
+    //Following method overridden by the method in child class DisplayController
+    displayAllBooksInLibrary(){};
     
 }
 
@@ -82,7 +103,7 @@ class DisplayController extends MyLibrary {
         const buttonsRemoveBook = document.querySelectorAll('button[name="button-remove-book"]');
         buttonsRemoveBook.forEach((button) => {
             button.addEventListener('click', () => {
-                removeBook(button.getAttribute('id'));            
+                this.removeBook(button.getAttribute('id'));            
             })
         })
     }
@@ -91,7 +112,7 @@ class DisplayController extends MyLibrary {
         const buttonsToggleBookStatus = document.querySelectorAll('button[name="button-toggle-book-status"]');
         buttonsToggleBookStatus.forEach((button) => {
             button.addEventListener('click', () => {            
-                toggleBookReadStatus(button.getAttribute('id'));
+                this.toggleBookReadStatus(button.getAttribute('id'));
             })
         })
     }
@@ -149,8 +170,8 @@ class DisplayController extends MyLibrary {
             this.bookListContainer.appendChild(this.createBookRow(book, bookIndex));
         });
     
-        // removeBookButtonBehavior();
-        // toggleBookReadButtonBehavior();
+        this.removeBookButtonBehavior();
+        this.toggleBookReadButtonBehavior();
     }
 }
 
