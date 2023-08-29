@@ -1,47 +1,3 @@
-class DisplayController {
-
-    headerRowFields = ["S. No.", "Title", "Author", "Pages", "Read", "Remove", "Toggle"];
-    bookListContainer = document.getElementById('book-list');
-    addBookForm = document.getElementById('add-new-book');
-
-    constructor() {
-        this.displayAllBooksInLibrary();
-    }
-
-    createHeaderRow() {
-    
-        let headerRow = document.createElement('div');
-        headerRow.classList.add("book-row",  "heading-row");
-        this.headerRowFields.forEach((field) => {
-            let headerRowField = document.createElement('div');
-            headerRowField.textContent = field;
-            headerRow.appendChild(headerRowField);
-        });
-        return headerRow;
-    }
-
-    removeAllChildNodes(parent) {
-        while (parent.firstChild) {        
-            parent.removeChild(parent.firstChild);
-        }
-    }
-
-    displayAllBooksInLibrary() {
-    
-        this.removeAllChildNodes(this.bookListContainer);
-        
-        this.bookListContainer.appendChild(this.createHeaderRow());
-    
-        // myLibrary.forEach((book) => {
-        //     let bookIndex = (myLibrary.indexOf(book));
-        //     bookListContainer.appendChild(createBookRow(book, bookIndex));
-        // });
-    
-        // removeBookButtonBehavior();
-        // toggleBookReadButtonBehavior();
-    }
-}
-
 class Book {
 
     constructor(serialNo, title, author, pages, read) {
@@ -65,8 +21,7 @@ class MyLibrary {
         this.hobbitBook = new Book(this.generateBookSerialNo(), 'The Hobbit', 'J.R.R. Tolkein', 295, false);
         this.addBookToLibrary(this.hobbitBook);
         this.hpBook = new Book (this.generateBookSerialNo(), 'Harry Potter', 'J.K. Rowling', 500, false);
-        this.addBookToLibrary(this.hpBook);
-        this.displayController = new DisplayController;        
+        this.addBookToLibrary(this.hpBook);            
     }
 
     generateBookSerialNo() {
@@ -79,5 +34,127 @@ class MyLibrary {
     
 }
 
+class DisplayController extends MyLibrary {
 
-let obj1 = new MyLibrary;
+    headerRowFields = ["S. No.", "Title", "Author", "Pages", "Read", "Remove", "Toggle"];
+    bookListContainer = document.getElementById('book-list');
+    addBookForm = document.getElementById('add-new-book');
+
+    buttonShowBookForm = document.getElementById('show-add-book-form');
+    buttonSubmitBookDetails = document.getElementById('submit-new-book');
+
+    constructor() {
+        super();
+        this.displayAllBooksInLibrary();        
+    }
+
+    createHeaderRow() {
+    
+        let headerRow = document.createElement('div');
+        headerRow.classList.add("book-row",  "heading-row");
+        this.headerRowFields.forEach((field) => {
+            let headerRowField = document.createElement('div');
+            headerRowField.textContent = field;
+            headerRow.appendChild(headerRowField);
+        });
+        return headerRow;
+    }
+
+    removeAllChildNodes(parent) {
+        while (parent.firstChild) {        
+            parent.removeChild(parent.firstChild);
+        }
+    }
+
+    submitButtonBehavior(event) {
+        event.preventDefault();
+        const newBook = new Book (
+                                    document.getElementById('title').value,
+                                    document.getElementById('author').value,
+                                    document.getElementById('pages').value,
+                                    document.querySelector('input[name="read"]:checked').value
+                                );    
+        addBookToLibrary(newBook);
+        displayAllBooksInLibrary();
+    };
+
+    removeBookButtonBehavior() {
+        const buttonsRemoveBook = document.querySelectorAll('button[name="button-remove-book"]');
+        buttonsRemoveBook.forEach((button) => {
+            button.addEventListener('click', () => {
+                removeBook(button.getAttribute('id'));            
+            })
+        })
+    }
+
+    toggleBookReadButtonBehavior() {
+        const buttonsToggleBookStatus = document.querySelectorAll('button[name="button-toggle-book-status"]');
+        buttonsToggleBookStatus.forEach((button) => {
+            button.addEventListener('click', () => {            
+                toggleBookReadStatus(button.getAttribute('id'));
+            })
+        })
+    }
+
+    createDivWithBookRemoveButton(bookSerialNo) {
+        let fieldDiv = document.createElement('div');
+        let removeBookButton = document.createElement('button'); 
+        removeBookButton.textContent = "Remove";
+        removeBookButton.type = "button";
+        removeBookButton.id = bookSerialNo;
+        removeBookButton.name = "button-remove-book";
+        fieldDiv.appendChild(removeBookButton);
+        return(fieldDiv);
+    }
+
+    createDivWithToggleBookReadButton(bookSerialNo) {
+        let fieldDiv = document.createElement('div');
+        let removeBookButton = document.createElement('button'); 
+        removeBookButton.textContent = "Toggle Read";
+        removeBookButton.type = "button";
+        removeBookButton.id = bookSerialNo;
+        removeBookButton.name = "button-toggle-book-status";
+        fieldDiv.appendChild(removeBookButton);
+        return(fieldDiv);
+    }
+
+    createBookRow(book, bookIndex) {
+
+        let bookRow = document.createElement('div');
+        bookRow.classList.add("book-row");    
+    
+        for(const property in book) {  
+            if(property !== 'toggleRead') {
+                let fieldDiv = document.createElement('div');
+                fieldDiv.textContent = book[property];        
+                bookRow.appendChild(fieldDiv);    
+            }
+        }
+    
+        bookRow.appendChild(this.createDivWithBookRemoveButton(book['serialNo']));
+        bookRow.appendChild(this.createDivWithToggleBookReadButton(book['serialNo']));    
+    
+        return bookRow;
+    }
+
+    displayAllBooksInLibrary() {
+    
+        this.removeAllChildNodes(this.bookListContainer);
+        
+        this.bookListContainer.appendChild(this.createHeaderRow());
+
+    
+        this.myLibrary.forEach((book) => {
+            let bookIndex = (this.myLibrary.indexOf(book));
+            this.bookListContainer.appendChild(this.createBookRow(book, bookIndex));
+        });
+    
+        // removeBookButtonBehavior();
+        // toggleBookReadButtonBehavior();
+    }
+}
+
+
+
+
+let obj1 = new DisplayController;
