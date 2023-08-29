@@ -8,7 +8,7 @@ class Book {
         this.read = Boolean(parseInt(read));
     }
 
-    toggleRead() {
+    toggleRead = () => {
         this.read = (this.read) ? false : true;    
     }
 }
@@ -24,7 +24,7 @@ class MyLibrary {
         this.addBookToLibrary(this.hpBook);            
     }
 
-    generateBookSerialNo() {
+    generateBookSerialNo = () => {
         return (this.myLibrary.length == 0) ? 1: (this.myLibrary[this.myLibrary.length-1].serialNo + 1);
     }
 
@@ -39,23 +39,23 @@ class MyLibrary {
         this.addBookToLibrary(newBook);         
     }
     
-    addBookToLibrary(book) {    
+    addBookToLibrary = (book) => {    
         return this.myLibrary.push(book);        
     }
 
-    findBookIndexInMyLibrary(bookSerialNo) {
+    findBookIndexInMyLibrary = (bookSerialNo) => {
         return this.myLibrary.findIndex((bookObject) => {
             return bookObject['serialNo'] == bookSerialNo;
         });
     }
 
-    removeBook(bookSerialNo) {
+    removeBook = (bookSerialNo) => {
         const bookIndex = this.findBookIndexInMyLibrary(bookSerialNo);
         this.myLibrary.splice(bookIndex, 1);        
         this.displayAllBooksInLibrary();
     }
 
-    toggleBookReadStatus(bookSerialNo) {
+    toggleBookReadStatus = (bookSerialNo) => {
         const bookIndex = this.findBookIndexInMyLibrary(bookSerialNo);    
         (this.myLibrary[bookIndex].toggleRead());        
         this.displayAllBooksInLibrary();        
@@ -79,7 +79,7 @@ class DisplayController extends MyLibrary {
         this.displayAllBooksInLibrary();        
     }
 
-    createHeaderRow() {    
+    createHeaderRow = () => {    
         let headerRow = document.createElement('div');
         headerRow.classList.add("book-row",  "heading-row");
         this.headerRowFields.forEach((field) => {
@@ -90,7 +90,7 @@ class DisplayController extends MyLibrary {
         return headerRow;
     }
 
-    removeAllChildNodes(parent) {
+    removeAllChildNodes = (parent) => {
         while (parent.firstChild) {        
             parent.removeChild(parent.firstChild);
         }
@@ -111,7 +111,7 @@ class DisplayController extends MyLibrary {
         this.displayAllBooksInLibrary();
     }
 
-    removeBookButtonBehavior() {
+    removeBookButtonBehavior = () => {
         const buttonsRemoveBook = document.querySelectorAll('button[name="button-remove-book"]');
         buttonsRemoveBook.forEach((button) => {
             button.addEventListener('click', () => {
@@ -120,7 +120,7 @@ class DisplayController extends MyLibrary {
         })
     }
 
-    toggleBookReadButtonBehavior() {
+    toggleBookReadButtonBehavior = () => {
         const buttonsToggleBookStatus = document.querySelectorAll('button[name="button-toggle-book-status"]');
         buttonsToggleBookStatus.forEach((button) => {
             button.addEventListener('click', () => {            
@@ -129,7 +129,7 @@ class DisplayController extends MyLibrary {
         })
     }
 
-    createDivWithBookRemoveButton(bookSerialNo) {
+    createDivWithBookRemoveButton = (bookSerialNo) => {
         let fieldDiv = document.createElement('div');
         let removeBookButton = document.createElement('button'); 
         removeBookButton.textContent = "Remove";
@@ -140,7 +140,7 @@ class DisplayController extends MyLibrary {
         return(fieldDiv);
     }
 
-    createDivWithToggleBookReadButton(bookSerialNo) {
+    createDivWithToggleBookReadButton = (bookSerialNo) => {
         let fieldDiv = document.createElement('div');
         let removeBookButton = document.createElement('button'); 
         removeBookButton.textContent = "Toggle Read";
@@ -151,7 +151,7 @@ class DisplayController extends MyLibrary {
         return(fieldDiv);
     }
 
-    createBookRow(book) {
+    createBookRow = (book) => {
 
         let bookRow = document.createElement('div');
         bookRow.classList.add("book-row");    
@@ -170,7 +170,7 @@ class DisplayController extends MyLibrary {
         return bookRow;
     }
 
-    displayAllBooksInLibrary() {            
+    displayAllBooksInLibrary = () => {            
         this.removeAllChildNodes(this.bookListContainer);
         
         this.bookListContainer.appendChild(this.createHeaderRow());
