@@ -28,8 +28,19 @@ class MyLibrary {
         return (this.myLibrary.length == 0) ? 1: (this.myLibrary[this.myLibrary.length-1].serialNo + 1);
     }
 
+    generateBookObject(title, author, pages, read) {
+        let newBook = new Book (
+                                    this.generateBookSerialNo(),
+                                    title,
+                                    author,
+                                    pages,
+                                    read                            
+                                );
+        this.addBookToLibrary(newBook);         
+    }
+    
     addBookToLibrary(book) {    
-        this.myLibrary.push(book);
+        return this.myLibrary.push(book);        
     }
 
     findBookIndexInMyLibrary(bookSerialNo) {
@@ -40,39 +51,35 @@ class MyLibrary {
 
     removeBook(bookSerialNo) {
         const bookIndex = this.findBookIndexInMyLibrary(bookSerialNo);
-        this.myLibrary.splice(bookIndex, 1);
+        this.myLibrary.splice(bookIndex, 1);        
         this.displayAllBooksInLibrary();
     }
 
     toggleBookReadStatus(bookSerialNo) {
         const bookIndex = this.findBookIndexInMyLibrary(bookSerialNo);    
-        (this.myLibrary[bookIndex].toggleRead());
-        this.displayAllBooksInLibrary();
+        (this.myLibrary[bookIndex].toggleRead());        
+        this.displayAllBooksInLibrary();        
     }
 
-    // Following method overridden by the method in child class 'DisplayController'
-    displayAllBooksInLibrary() {};
-    
 }
 
 class DisplayController extends MyLibrary {
 
-    headerRowFields = ["S. No.", "Title", "Author", "Pages", "Read", "Remove", "Toggle"];
-    bookListContainer = document.getElementById('book-list');
-    addBookForm = document.getElementById('add-new-book');
-
-    buttonShowBookForm = document.getElementById('show-add-book-form');
-    buttonSubmitBookDetails = document.getElementById('submit-new-book');
-
     constructor() {
         super();
-        this.displayAllBooksInLibrary();        
+        this.headerRowFields = ["S. No.", "Title", "Author", "Pages", "Read", "Remove", "Toggle"];
+        this.bookListContainer = document.getElementById('book-list');
+        this.addBookForm = document.getElementById('add-new-book');
+
+        this.buttonShowBookForm = document.getElementById('show-add-book-form');
+        this.buttonSubmitBookDetails = document.getElementById('submit-new-book');
+
         this.buttonShowBookForm.addEventListener('click', () => this.addBookForm.classList.toggle('hide'));
         this.buttonSubmitBookDetails.addEventListener("click", this.submitButtonBehavior);
+        this.displayAllBooksInLibrary();        
     }
 
-    createHeaderRow() {
-    
+    createHeaderRow() {    
         let headerRow = document.createElement('div');
         headerRow.classList.add("book-row",  "heading-row");
         this.headerRowFields.forEach((field) => {
@@ -89,17 +96,20 @@ class DisplayController extends MyLibrary {
         }
     }
 
-    submitButtonBehavior(event) {
-        event.preventDefault();
-        const newBook = new Book (
+    submitButtonBehavior = (event) => {
+        event.preventDefault();        
+        this.submitButtonFunctionality (                                    
                                     document.getElementById('title').value,
                                     document.getElementById('author').value,
                                     document.getElementById('pages').value,
                                     document.querySelector('input[name="read"]:checked').value
-                                );    
-        addBookToLibrary(newBook);
-        displayAllBooksInLibrary();
+                                );        
     };
+
+    submitButtonFunctionality = (title, author, pages, read) => {        
+        this.generateBookObject(title, author, pages, read);  
+        this.displayAllBooksInLibrary();
+    }
 
     removeBookButtonBehavior() {
         const buttonsRemoveBook = document.querySelectorAll('button[name="button-remove-book"]');
@@ -141,7 +151,7 @@ class DisplayController extends MyLibrary {
         return(fieldDiv);
     }
 
-    createBookRow(book, bookIndex) {
+    createBookRow(book) {
 
         let bookRow = document.createElement('div');
         bookRow.classList.add("book-row");    
@@ -160,12 +170,10 @@ class DisplayController extends MyLibrary {
         return bookRow;
     }
 
-    displayAllBooksInLibrary() {
-    
+    displayAllBooksInLibrary() {            
         this.removeAllChildNodes(this.bookListContainer);
         
         this.bookListContainer.appendChild(this.createHeaderRow());
-
     
         this.myLibrary.forEach((book) => {
             let bookIndex = (this.myLibrary.indexOf(book));
@@ -177,4 +185,4 @@ class DisplayController extends MyLibrary {
     }
 }
 
-let obj1 = new DisplayController;
+let obj = new DisplayController;
