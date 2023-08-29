@@ -50,8 +50,8 @@ class MyLibrary {
         this.displayAllBooksInLibrary();
     }
 
-    //Following method overridden by the method in child class DisplayController
-    displayAllBooksInLibrary(){};
+    // Following method overridden by the method in child class 'DisplayController'
+    displayAllBooksInLibrary() {};
     
 }
 
@@ -67,6 +67,8 @@ class DisplayController extends MyLibrary {
     constructor() {
         super();
         this.displayAllBooksInLibrary();        
+        this.buttonShowBookForm.addEventListener('click', () => this.addBookForm.classList.toggle('hide'));
+        this.buttonSubmitBookDetails.addEventListener("click", this.submitButtonBehavior);
     }
 
     createHeaderRow() {
@@ -174,8 +176,5 @@ class DisplayController extends MyLibrary {
         this.toggleBookReadButtonBehavior();
     }
 }
-
-
-
 
 let obj1 = new DisplayController;
