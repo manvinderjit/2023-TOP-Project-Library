@@ -12,6 +12,7 @@ class ValidateInputs {
 
     checkEmptyFields = () => {   
         if(this.formElement.checkValidity()){
+            this.resetErrors();
             return true;
         }else {
             this.showErrors();
@@ -38,6 +39,12 @@ class ValidateInputs {
         } else {
             this.pageError.textContent = "";
         }
+    }
+
+    resetErrors = () => {
+        this.BookTitleError.textContent = "";
+        this.bookAuthorError.textContent = "";
+        this.pageError.textContent = "";
     }
 }
 
