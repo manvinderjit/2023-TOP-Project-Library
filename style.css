@@ -2,7 +2,7 @@ body {
     display: flex;
     flex-direction: column;    
     height: 100vh;    
-    max-width: 1220px;
+    max-width: 1520px;
     margin: 0 auto;
 }
 
@@ -13,7 +13,7 @@ header, footer {
 
 main {
     display: grid;
-    grid-template-columns: 2.5fr 1fr;        
+    grid-template-columns: 2fr 1fr;        
     gap: 1rem;
 }
 
@@ -61,9 +61,9 @@ ul {
 
 li {
     list-style: none;
-    display: flex;  
-    justify-content: space-between;
-    align-items: center;
+    display: grid;  
+    grid-template-columns: repeat(3, 1fr);
+    
     gap: 1rem;
 }
 
@@ -75,4 +75,24 @@ button {
     width: 10rem;
     height: 2rem;
     font-size: 1rem;
+}
+
+/* Input Validation Classes */
+
+input:invalid {
+    border: 2px dashed red;
+}
+
+input:invalid:required {
+    background-image: linear-gradient(to right, pink, lightgreen);
+}
+
+input:valid {
+    border: 2px solid green;
+}
+
+
+.error {
+    font-size: 12px;
+    color: red;
 }

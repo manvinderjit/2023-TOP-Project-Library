@@ -1,3 +1,46 @@
+class ValidateInputs {
+
+    constructor() {
+        this.formElement = document.querySelector("#add-new-book");        
+        this.bookTitle = document.querySelector("#title");
+        this.BookTitleError = document.querySelector("#title + span.error");
+        this.bookAuthor = document.querySelector("#author");
+        this.bookAuthorError = document.querySelector("#author + span.error");
+        this.page = document.querySelector("#pages");
+        this.pageError = document.querySelector("#pages + span.error");
+    }
+
+    checkEmptyFields = () => {   
+        if(this.formElement.checkValidity()){
+            return true;
+        }else {
+            this.showErrors();
+            return false;
+        }
+    }
+
+    showErrors = () => {
+
+        if (this.bookTitle.validity.valueMissing) {
+            this.BookTitleError.textContent = "You need to enter a book title.";
+        } else {
+            this.BookTitleError.textContent = "";
+        }
+        
+        if (this.bookAuthor.validity.valueMissing) {
+            this.bookAuthorError.textContent = "You need to enter the book's author.";
+        } else {
+            this.bookAuthorError.textContent = "";
+        }
+
+        if (this.page.validity.valueMissing) {
+            this.pageError.textContent = "You need to enter the total pages.";
+        } else {
+            this.pageError.textContent = "";
+        }
+    }
+}
+
 class Book {
 
     constructor(serialNo, title, author, pages, read) {
@@ -28,7 +71,7 @@ class MyLibrary {
         return (this.myLibrary.length == 0) ? 1: (this.myLibrary[this.myLibrary.length-1].serialNo + 1);
     }
 
-    generateBookObject(title, author, pages, read) {
+    generateBookObject(title, author, pages, read) {        
         let newBook = new Book (
                                     this.generateBookSerialNo(),
                                     title,
@@ -97,13 +140,17 @@ class DisplayController extends MyLibrary {
     }
 
     submitButtonBehavior = (event) => {
-        event.preventDefault();        
-        this.submitButtonFunctionality (                                    
-                                    document.getElementById('title').value,
-                                    document.getElementById('author').value,
-                                    document.getElementById('pages').value,
-                                    document.querySelector('input[name="read"]:checked').value
-                                );        
+        event.preventDefault();    
+
+        const validateForm = new ValidateInputs;
+        if(validateForm.checkEmptyFields()){
+            this.submitButtonFunctionality (                                    
+                document.getElementById('title').value,
+                document.getElementById('author').value,
+                document.getElementById('pages').value,
+                document.querySelector('input[name="read"]:checked').value
+            );        
+        }
     };
 
     submitButtonFunctionality = (title, author, pages, read) => {        
@@ -186,3 +233,4 @@ class DisplayController extends MyLibrary {
 }
 
 let obj = new DisplayController;
+
